@@ -3,16 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>El Topacio - WebAR con p5.js</title>
+  <title>El Topacio - WebAR con p5.js Brillo</title>
 
-  <!-- 1. CARGA DE LIBRERÍAS (A-Frame, MindAR y p5.js) -->
+  <!-- LIBRERÍAS -->
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
 
   <style>
     body { margin: 0; overflow: hidden; }
-    /* Mantiene el canvas de p5 invisible fuera de pantalla */
     #p5Canvas { display: none; }
     #indicador {
       position: absolute;
@@ -34,7 +33,7 @@
   </style>
 
   <script>
-    // Componente para refrescar la animación de p5.js en Realidad Aumentada
+    // Componente para forzar la actualización continua del canvas de p5 en AR
     AFRAME.registerComponent('p5-texture', {
       tick: function () {
         let mesh = this.el.getObject3D('mesh');
@@ -57,14 +56,14 @@
     device-orientation-permission-ui="enabled: false">
 
     <a-assets>
-      <!-- TUS IMÁGENES RE CORTADAS -->
+      <!-- RECURSOS PNG -->
       <img id="imgColibri" src="./colibri.png">
       <img id="imgOrquidea" src="./orquidea.png">
       <img id="imgPajaro2" src="./pajaro2.png">
       <img id="imgGallito" src="./gallito.png">
       <img id="imgPajaro4" src="./pajaro4.png">
       
-      <!-- LIENZO DE P5.JS -->
+      <!-- CANVAS DE P5.JS -->
       <canvas id="p5Canvas"></canvas>
     </a-assets>
 
@@ -93,16 +92,15 @@
     <!-- ================= PÁGINA 1 (targetIndex: 1) ================= -->
     <a-entity mindar-image-target="targetIndex: 1">
 
-      <!-- EFECTO P5.JS: Partículas de polvo/polen mágico sobre la página -->
+      <!-- PLANO CON LAS PARTÍCULAS BRILLANTES DE P5.JS (Posicionado ligeramente al frente) -->
       <a-plane 
         src="#p5Canvas" 
-        position="0 0 0.03" 
-        height="0.9" width="1.3" 
+        position="0 0 0.04" 
+        height="1.2" width="1.6" 
         p5-texture
-        material="transparent: true; alphaTest: 0.1">
+        material="transparent: true; alphaTest: 0.01; opacity: 1">
       </a-plane>
 
-      <!-- TUS TRES IMÁGENES ANIMADAS -->
       <a-plane 
         src="#imgOrquidea" 
         position="-0.65 -0.38 0.01" 
@@ -131,39 +129,53 @@
 
   </a-scene>
 
-  <!-- 3. CÓDIGO ANIMADO CON P5.JS -->
+  <!-- SKETCH DE P5.JS CON PARTÍCULAS BRILLANTES Y PARPADEO -->
   <script>
     let particles = [];
 
     function setup() {
-      // Creamos el lienzo
       let p5Canvas = createCanvas(512, 512);
       p5Canvas.id('p5Canvas');
       
-      // Creamos 40 partículas doradas
-      for (let i = 0; i < 40; i++) {
+      // Creamos 50 lucérnagas/partículas brillantes
+      for (let i = 0; i < 50; i++) {
         particles.push({
           x: random(width),
           y: random(height),
-          size: random(4, 9),
-          speedY: random(-1.2, -0.4)
+          size: random(10, 22),       // Mucho más grandes
+          speedY: random(-1.5, -0.4),  // Velocidad hacia arriba
+          alpha: random(150, 255),    // Brillo/Transparencia
+          alphaSpeed: random(2, 5)     // Velocidad de titilado
         });
       }
     }
 
     function draw() {
-      clear(); // Fondo transparente
-      noStroke();
-      fill(255, 230, 120, 200); // Color dorado mágico
+      clear(); // Mantiene el fondo 100% transparente
       
-      // Mueve y dibuja cada partícula
       for (let p of particles) {
+        // Efecto de titilado/resplandor
+        p.alpha += p.alphaSpeed;
+        if (p.alpha > 255 || p.alpha < 100) {
+          p.alphaSpeed *= -1;
+        }
+
+        // 1. Halo o Resplandor exterior (Luz difusa)
+        noStroke();
+        fill(255, 240, 150, p.alpha * 0.3);
+        ellipse(p.x, p.y, p.size * 1.8);
+
+        // 2. Núcleo brillante e intenso
+        fill(255, 255, 200, p.alpha);
         ellipse(p.x, p.y, p.size);
+
+        // Movimiento flotante
         p.y += p.speedY;
-        
-        // Al llegar arriba, reaparece abajo
-        if (p.y < 0) {
-          p.y = height;
+        p.x += sin(frameCount * 0.05 + p.y) * 0.5; // Movimiento ondulatorio suave
+
+        // Reaparición abajo
+        if (p.y < -20) {
+          p.y = height + 20;
           p.x = random(width);
         }
       }
