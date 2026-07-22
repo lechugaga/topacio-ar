@@ -45,12 +45,12 @@
     device-orientation-permission-ui="enabled: false">
 
     <a-assets>
-      <!-- RECURSOS PÁGINA 1 -->
+      <!-- PÁGINA 1 -->
       <img id="imgColibri" src="./colibri.png">
       <img id="imgOrquidea" src="./orquidea.png">
       <img id="imgPajaro2" src="./pajaro2.png">
 
-      <!-- RECURSOS PÁGINA 2 -->
+      <!-- PÁGINA 2 -->
       <img id="imgGallito" src="./gallito.png">
       <img id="imgPajaro4" src="./pajaro4.png">
     </a-assets>
@@ -58,49 +58,11 @@
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
     <!-- ==========================================
-         PÁGINA 1 (pagina_revista.jpg) -> targetIndex: 0
+         PÁGINA 2 (En tu targets.mind es el índice 0)
          ========================================== -->
     <a-entity mindar-image-target="targetIndex: 0">
 
-      <!-- 1. ORQUÍDEA -->
-      <a-plane 
-        src="#imgOrquidea" 
-        position="-0.65 -0.38 0.01" 
-        height="0.4" 
-        width="0.5" 
-        material="alphaTest: 0.5; transparent: true"
-        animation="property: scale; to: 1.03 1.03 1; dir: alternate; dur: 2200; loop: true; easing: easeInOutSine">
-      </a-plane>
-
-      <!-- 2. COLIBRÍ -->
-      <a-plane 
-        src="#imgColibri" 
-        position="-0.35 -0.15 0.02" 
-        height="0.25" 
-        width="0.35" 
-        material="alphaTest: 0.5; transparent: true"
-        animation__flotar="property: position; to: -0.35 -0.13 0.03; dir: alternate; dur: 800; loop: true; easing: easeInOutQuad">
-      </a-plane>
-
-      <!-- 3. PAJARITO CAFÉ -->
-      <a-plane 
-        src="#imgPajaro2" 
-        position="0.32 -0.35 0.01" 
-        height="0.35" 
-        width="0.35" 
-        material="alphaTest: 0.5; transparent: true"
-        animation__respirar="property: scale; to: 1.03 1.03 1; dir: alternate; dur: 1500; loop: true; easing: easeInOutSine">
-      </a-plane>
-
-    </a-entity>
-
-
-    <!-- ==========================================
-         PÁGINA 2 (pagina2.jpg) -> targetIndex: 1
-         ========================================== -->
-    <a-entity mindar-image-target="targetIndex: 1">
-
-      <!-- GALLITO DE ROCA (Con animación de respiración e inclinación) -->
+      <!-- GALLITO DE ROCA (Con movimiento de respiración e inclinación) -->
       <a-plane 
         src="#imgGallito" 
         position="-0.38 -0.28 0.01" 
@@ -119,6 +81,44 @@
         width="0.4" 
         material="alphaTest: 0.5; transparent: true"
         animation__flotar="property: position; to: 0.38 0.23 0.03; dir: alternate; dur: 800; loop: true; easing: easeInOutQuad">
+      </a-plane>
+
+    </a-entity>
+
+
+    <!-- ==========================================
+         PÁGINA 1 (En tu targets.mind es el índice 1)
+         ========================================== -->
+    <a-entity mindar-image-target="targetIndex: 1">
+
+      <!-- ORQUÍDEA -->
+      <a-plane 
+        src="#imgOrquidea" 
+        position="-0.65 -0.38 0.01" 
+        height="0.4" 
+        width="0.5" 
+        material="alphaTest: 0.5; transparent: true"
+        animation="property: scale; to: 1.03 1.03 1; dir: alternate; dur: 2200; loop: true; easing: easeInOutSine">
+      </a-plane>
+
+      <!-- COLIBRÍ -->
+      <a-plane 
+        src="#imgColibri" 
+        position="-0.35 -0.15 0.02" 
+        height="0.25" 
+        width="0.35" 
+        material="alphaTest: 0.5; transparent: true"
+        animation__flotar="property: position; to: -0.35 -0.13 0.03; dir: alternate; dur: 800; loop: true; easing: easeInOutQuad">
+      </a-plane>
+
+      <!-- PAJARITO CAFÉ -->
+      <a-plane 
+        src="#imgPajaro2" 
+        position="0.32 -0.35 0.01" 
+        height="0.35" 
+        width="0.35" 
+        material="alphaTest: 0.5; transparent: true"
+        animation__respirar="property: scale; to: 1.03 1.03 1; dir: alternate; dur: 1500; loop: true; easing: easeInOutSine">
       </a-plane>
 
     </a-entity>
